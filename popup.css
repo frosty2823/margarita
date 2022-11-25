@@ -1,6 +1,13 @@
+body {
+  width: 150px;
+}
+.wrapper {
+  align-items: center;
+}
 .margarita {
-  width: 100px;
+  width: 150px;
   height: 25px;
+  margin: 2px;
   color: rgb(13, 55, 63);
   border-radius: 20px;
   border-color: rgb(16, 98, 112);
