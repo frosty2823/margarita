@@ -1,0 +1,10 @@
+.margarita {
+  width: 100px;
+  height: 25px;
+  color: rgb(13, 55, 63);
+  border-radius: 20px;
+  border-color: rgb(16, 98, 112);
+  background-color: rgb(255, 255, 255);
+  font-size: 14px;
+  text-align: center;
+}
