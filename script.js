@@ -1,25 +1,37 @@
 window.addEventListener("load", function () {
   const buttons = document.querySelectorAll(".margarita");
+  const personalNote = document.querySelector("#personalNote");
+  const successLabel = document.querySelector("#clipped");
   buttons.forEach(function (button) {
     button.addEventListener("click", function () {
-      runCopyFunction(button.textContent);
+      runCopyFunction(button.textContent, personalNote.value, successLabel);
     });
   });
 });
 
-async function runCopyFunction(buttonText) {
+async function runCopyFunction(buttonText, personalNote, successLabel) {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: copyToClickBoard,
-    args: [buttonText],
-  });
+  chrome.scripting.executeScript(
+    {
+      target: { tabId: tab.id },
+      function: copyToClickBoard,
+      args: [buttonText, personalNote],
+    },
+    (result) => {
+      console.log(result);
+      successLabel.innerText = result[0].result;
+      setTimeout(function () {
+        successLabel.innerText = " ";
+      }, 2000);
+    }
+  );
 }
 
-const copyToClickBoard = function (buttonText) {
+const copyToClickBoard = function (buttonText, personalNote) {
   const date = document.querySelector(".g3").getAttribute("title");
   const fullName = document.querySelector(".gD").getAttribute("name");
-  const domainName = document.querySelector(".gD").getAttribute("email");
+  const email = document.querySelector(".gD").getAttribute("email");
+  const domainName = email.split("@").pop();
   const arr = document.querySelectorAll(".a3s.aiL");
   let lastEmailContent = arr[0].innerText.split("\n").join(" ");
   lastEmailContent = lastEmailContent.split("\t").join(" ");
@@ -33,10 +45,13 @@ const copyToClickBoard = function (buttonText) {
     "\t" +
     domainName +
     "\t" +
+    email +
+    "\t" +
     buttonText +
     "\t" +
     lastEmailContent +
     "\t" +
+    personalNote +
     "\t" +
     conversationURL;
 
@@ -46,8 +61,8 @@ const copyToClickBoard = function (buttonText) {
 
   try {
     var successful = document.execCommand("copy");
-    var msg = successful ? "successful" : "unsuccessful";
-    console.log(msg);
+    var msg = successful ? "Clipped" : "Not Clipped";
+    return msg;
   } catch (err) {
     console.error("Error");
   }
