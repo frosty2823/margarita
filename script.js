@@ -1,19 +1,22 @@
 window.addEventListener("load", function () {
-  const button = document.querySelector(".margarita");
-  button.addEventListener("click", function () {
-    runCopyFunction();
+  const buttons = document.querySelectorAll(".margarita");
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      runCopyFunction(button.textContent);
+    });
   });
 });
 
-async function runCopyFunction() {
+async function runCopyFunction(buttonText) {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     function: copyToClickBoard,
+    args: [buttonText],
   });
 }
 
-const copyToClickBoard = function () {
+const copyToClickBoard = function (buttonText) {
   const date = document.querySelector(".g3").getAttribute("title");
   const fullName = document.querySelector(".gD").getAttribute("name");
   const domainName = document.querySelector(".gD").getAttribute("email");
@@ -30,6 +33,7 @@ const copyToClickBoard = function () {
     "\t" +
     domainName +
     "\t" +
+    buttonText +
     "\t" +
     lastEmailContent +
     "\t" +
