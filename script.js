@@ -21,8 +21,7 @@ const copyToClickBoard = function (buttonText) {
   const fullName = document.querySelector(".gD").getAttribute("name");
   const domainName = document.querySelector(".gD").getAttribute("email");
   const arr = document.querySelectorAll(".a3s.aiL");
-  const len = arr.length - 2;
-  const lastEmailContent = arr[len].children[0].textContent;
+  const lastEmailContent = arr[0].innerText.split("\n").join(" ");
   const conversationURL = document.location.href;
   // Creating the textfield from where we will execute the copy commmand
   var textArea = document.createElement("textarea");
