@@ -55,6 +55,8 @@ const copyToClickBoard = function (buttonText, personalNote) {
     "\t" +
     conversationURL;
 
+  textArea.style.position = "fixed";
+
   document.body.appendChild(textArea);
   textArea.focus();
   textArea.select();
